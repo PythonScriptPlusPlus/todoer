@@ -73,21 +73,19 @@
 export default {
   data() {
     return {
-      tasks: [
-        {
-          done: false,
-          text: 'Voluptate aliquip ea labore aliquip culpa culpa fugiat cillum.',
-        },
-        {
-          done: false,
-          text: 'Do ea eu culpa culpa nisi ipsum veniam velit id in nisi cupidatat deserunt.',
-        },
-        {
-          done: false,
-          text: 'Excepteur pariatur consequat proident aliqua duis exercitation nostrud.',
-        },
-      ],
+      tasks: [],
     };
+  },
+  mounted() {
+    fetch('http://127.0.0.1:5000/tasks') // URL of Flask server
+      .then((response) => response.json())
+      .then((data) => {
+        this.tasks = data.map((task) => ({
+          done: task.done, // Convert string to boolean
+          text: task.text,
+        }));
+      })
+      .catch((error) => console.error('Error fetching tasks:', error));
   },
 };
 </script>

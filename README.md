@@ -5,6 +5,11 @@
 npm install
 ```
 
+### Start back-end
+```
+python server.py
+```
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
