@@ -1,9 +1,9 @@
 <template>
   <div class="home">
-    <div class="home__line">
-      <input class="home__check" type="checkbox" aria-label="done or not" v-model="isChecked"/>
-      <H1 class="home__header" :class="isChecked ? 'home__header--crossed' : ''">
-        {{ a }}
+    <div v-for="task in tasks" :key="task.text" class="home__line">
+      <input class="home__check" type="checkbox" aria-label="done or not" v-model="task.done"/>
+      <H1 class="home__header" :class="task.done ? 'home__header--crossed' : ''">
+        {{ task.text }}
       </H1>
     </div>
   </div>
@@ -17,6 +17,7 @@
     &__line {
       display: flex;
       align-items: center;
+      margin-bottom: 1em;
       // justify-content: center;
     }
 
@@ -72,8 +73,20 @@
 export default {
   data() {
     return {
-      isChecked: true,
-      a: 'Ullamco excepteur dolor in non mollit irure eu aute consectetur consectetur sunt velit.',
+      tasks: [
+        {
+          done: false,
+          text: 'Voluptate aliquip ea labore aliquip culpa culpa fugiat cillum.',
+        },
+        {
+          done: false,
+          text: 'Do ea eu culpa culpa nisi ipsum veniam velit id in nisi cupidatat deserunt.',
+        },
+        {
+          done: false,
+          text: 'Excepteur pariatur consequat proident aliqua duis exercitation nostrud.',
+        },
+      ],
     };
   },
 };
