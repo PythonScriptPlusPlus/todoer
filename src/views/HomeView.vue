@@ -1,7 +1,17 @@
 <template>
   <div class="home">
-    <div v-for="task in tasks" :key="task.text" class="home__line">
-      <input class="home__check" type="checkbox" aria-label="done or not" v-model="task.done"/>
+    <div
+      v-for="task in tasks"
+      :key="task.text"
+      class="home__line"
+    >
+      <input
+        class="home__check"
+        type="checkbox"
+        aria-label="done or not"
+        v-model="task.done"
+        @change="taskDone(task.done)"
+      />
       <H1 class="home__header" :class="task.done ? 'home__header--crossed' : ''">
         {{ task.text }}
       </H1>
@@ -70,11 +80,24 @@
 </style>
 
 <script>
+import JSConfetti from 'js-confetti';
+
+const jsConfetti = new JSConfetti();
+
 export default {
   data() {
     return {
       tasks: [],
     };
+  },
+  methods: {
+    taskDone(state) {
+      if (state) {
+        jsConfetti.addConfetti({
+          confettiNumber: 300,
+        });
+      }
+    },
   },
   mounted() {
     fetch('http://127.0.0.1:5000/tasks') // URL of Flask server
