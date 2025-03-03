@@ -4,17 +4,25 @@
       v-for="task in tasks"
       :key="task.text"
       class="home__line"
+      @click="textToBox(task)"
+      @keydown.enter="textToBox(task)"
+      tabindex="0"
     >
       <input
         class="home__check"
         type="checkbox"
         aria-label="done or not"
         v-model="task.done"
-        @change="taskDone(task.done)"
       />
-      <H1 class="home__header" :class="task.done ? 'home__header--crossed' : ''">
+      <H1
+        class="home__header"
+        :class="task.done ? 'home__header--crossed' : ''"
+      >
         {{ task.text }}
       </H1>
+    </div>
+    <div class="home__add">
+      Add task
     </div>
   </div>
 </template>
@@ -25,10 +33,17 @@
     // background-color: greenyellow;
 
     &__line {
+      transition: background-color 0.5s;
+      background-color: #fff;
+      border-radius: 1em;
       display: flex;
       align-items: center;
       margin-bottom: 1em;
-      // justify-content: center;
+
+      &:hover {
+        transition: background-color 0.5s;
+        background-color: #eee;
+      }
     }
 
     &__check {
@@ -76,39 +91,48 @@
         text-decoration: line-through;
       }
     }
+
+    &__add {
+      transition: background-color 0.5s;
+      background-color: #ddd;
+      padding: .5em;
+      border-radius: 1em;
+      font-size: 2em;
+      text-justify:distribute;
+
+      &:hover {
+        transition: background-color 0.5s;
+        background-color: #ccc;
+      }
+    }
   }
 </style>
 
 <script>
 import JSConfetti from 'js-confetti';
+import { mapState, mapActions } from 'vuex';
 
 const jsConfetti = new JSConfetti();
 
 export default {
-  data() {
-    return {
-      tasks: [],
-    };
+  computed: {
+    ...mapState(['tasks']),
   },
   methods: {
-    taskDone(state) {
-      if (state) {
+    ...mapActions(['fetchTasks']),
+    textToBox(task) {
+      // eslint-disable-next-line no-param-reassign
+      task.done = !task.done;
+      if (task.done) {
         jsConfetti.addConfetti({
           confettiNumber: 300,
         });
       }
+      this.$store.commit('updateTask', task);
     },
   },
   mounted() {
-    fetch('http://127.0.0.1:5000/tasks') // URL of Flask server
-      .then((response) => response.json())
-      .then((data) => {
-        this.tasks = data.map((task) => ({
-          done: task.done, // Convert string to boolean
-          text: task.text,
-        }));
-      })
-      .catch((error) => console.error('Error fetching tasks:', error));
+    this.fetchTasks();
   },
 };
 </script>
