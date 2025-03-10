@@ -1,25 +1,32 @@
 <template>
   <div class="home">
+    {{ tasks }}
     <div
-      v-for="task in tasks"
-      :key="task.text"
-      class="home__line"
-      @click="textToBox(task)"
-      @keydown.enter="textToBox(task)"
-      tabindex="0"
+      class="home__category"
+      v-for="category in tasks"
+      :key="category.key"
     >
-      <input
-        class="home__check"
-        type="checkbox"
-        aria-label="done or not"
-        v-model="task.done"
-      />
-      <H1
-        class="home__header"
-        :class="task.done ? 'home__header--crossed' : ''"
+      <div
+        v-for="task in category"
+        :key="task.text"
+        class="home__line"
+        @click="textToBox(task)"
+        @keydown.enter="textToBox(task)"
+        tabindex="0"
       >
-        {{ task.text }}
-      </H1>
+        <input
+          class="home__check"
+          type="checkbox"
+          aria-label="done or not"
+          v-model="task.done"
+        />
+        <H1
+          class="home__header"
+          :class="task.done ? 'home__header--crossed' : ''"
+        >
+          {{ task.text }}
+        </H1>
+      </div>
     </div>
     <div class="home__add">
       Add task

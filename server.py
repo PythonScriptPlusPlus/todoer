@@ -9,7 +9,16 @@ CSV_FILE = "public/data.csv"
 
 def read_tasks():
     df = pd.read_csv(CSV_FILE)
-    return df.to_dict(orient='records')
+    tasks = {}
+    for _, row in df.iterrows():
+        category = row['category']
+        if category not in tasks:
+            tasks[category] = []
+        tasks[category].append({
+            "text": row['text'],
+            "done": row['done']
+        })
+    return tasks
 
 def save_tasks(tasks):
     df = pd.DataFrame(tasks)
