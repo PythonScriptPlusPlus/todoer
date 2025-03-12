@@ -9,9 +9,13 @@ export default createStore({
       state.tasks = tasks;
     },
     updateTask(state, updatedTask) {
-      const index = state.tasks.findIndex((task) => task.text === updatedTask.text);
-      if (index !== -1) {
-        state.tasks[index] = updatedTask;
+      // eslint-disable-next-line
+      for (const category in state.tasks) {
+        const taskIndex = state.tasks[category].findIndex((task) => task.text === updatedTask.text);
+        if (taskIndex !== -1) {
+          state.tasks[category][taskIndex] = updatedTask;
+          break;
+        }
       }
     },
   },
@@ -20,10 +24,7 @@ export default createStore({
       fetch('http://127.0.0.1:5000/tasks')
         .then((response) => response.json())
         .then((data) => {
-          const tasks = data.map((task) => ({
-            done: task.done,
-            text: task.text,
-          }));
+          const tasks = data;
           commit('setTasks', tasks);
         })
         .catch((error) => console.error('Error fetching tasks:', error));

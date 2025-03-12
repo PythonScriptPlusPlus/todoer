@@ -1,5 +1,5 @@
-done,text
-True,water plants
-False,text Rita
-True,see data about employment
-True,finish todo app
+category,done,text
+HSE,True,text Rita
+HSE,False,see data about employment
+chores,True,water plants
+long term,False,finish todo app

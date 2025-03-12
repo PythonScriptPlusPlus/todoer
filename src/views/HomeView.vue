@@ -1,25 +1,36 @@
 <template>
   <div class="home">
     <div
-      v-for="task in tasks"
-      :key="task.text"
-      class="home__line"
-      @click="textToBox(task)"
-      @keydown.enter="textToBox(task)"
-      tabindex="0"
+      v-for="(tasks,category) in tasks"
+      :key="category"
+      class="home__category"
     >
-      <input
-        class="home__check"
-        type="checkbox"
-        aria-label="done or not"
-        v-model="task.done"
-      />
-      <H1
-        class="home__header"
-        :class="task.done ? 'home__header--crossed' : ''"
+      <p
+        class="home__categoryText"
       >
-        {{ task.text }}
-      </H1>
+        {{ category }}
+      </p>
+      <div
+        v-for="task in tasks"
+        :key="task.text"
+        class="home__line"
+        @click="textToBox(task)"
+        @keydown.enter="textToBox(task)"
+        tabindex="0"
+      >
+        <input
+          class="home__check"
+          type="checkbox"
+          aria-label="done or not"
+          v-model="task.done"
+        />
+        <H1
+          class="home__header"
+          :class="task.done ? 'home__header--crossed' : ''"
+        >
+          {{ task.text }}
+        </H1>
+      </div>
     </div>
     <div class="home__add">
       Add task
@@ -30,7 +41,29 @@
 <style lang="scss">
   .home {
     margin: 2em;
-    // background-color: greenyellow;
+    text-align: left;
+
+    &__category {
+      position: relative;
+
+    &::before {
+      position: absolute;
+      content: '';
+      display: block;
+      height: calc(100% - 2rem);
+      width: 0.25rem;
+      background-color: rgb(255, 255, 98);
+      bottom: 0;
+      left: 0rem;
+    }
+    }
+
+    &__categoryText {
+      margin: 0;
+      margin-top: 2rem;
+      font-size: 2rem;
+      font-weight: bold;
+    }
 
     &__line {
       transition: background-color 0.5s;
@@ -39,6 +72,7 @@
       display: flex;
       align-items: center;
       margin-bottom: 1em;
+      margin-left: 1rem;
 
       &:hover {
         transition: background-color 0.5s;
@@ -49,9 +83,9 @@
     &__check {
       // transition: all 0.5s;
       appearance: none;
-      width: 1.9em;
-      height: 1.9em;
-      margin: 0 2em 0 0.1em;
+      width: 1.9rem;
+      height: 1.9rem;
+      margin: 0 1em 0 0.1em;
       border-radius: 50%;
       border: 1.5px solid #333;
       background-color: white;
@@ -86,6 +120,7 @@
       min-height: 1em;
       text-align: left;
       width: 90%;
+      font-weight: 100;
 
       &--crossed {
         text-decoration: line-through;
